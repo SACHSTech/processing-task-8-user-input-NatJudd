@@ -10,21 +10,43 @@ public class Sketch extends PApplet {
   // screen size variables
   int intScreenW = 800;
   int intScreenH = 600;
+  // random background colour
+  int intR = 0;
+  int intG = 0;
+  int intB = 0;
 
   // flower images
   PImage imgFlower1;
   PImage imgFlower2;
   PImage imgFlower3;
-
   // flower width to height scale
   double dblFlowerScale = 1.4;
 
   // grass image
   PImage imgGrass;
-
   // grass size
   int intGrassW = 40;
   int intGrassH = 20;
+
+  // butterfly image
+  PImage imgButterfly;
+  // butterfly size
+  int intFlyW = 55;
+  int intFlyH = 43;
+
+  // cloud image
+  PImage imgCloud;
+  // cloud size
+  int intCloudW = 164;
+  int intCloudH = 87;
+  // cloud position
+  float fltCloudX = 318;
+  float fltCloudY = 257;
+  // allows cloud movement
+  boolean blnCloudUp = false;
+  boolean blnCloudDown = false;
+  boolean blnCloudLeft = false;
+  boolean blnCloudRight = false;
 
   /**
    * initializes background size
@@ -42,7 +64,7 @@ public class Sketch extends PApplet {
    */
   public void setup() {
     // background colour
-    background(210, 255, 173);
+    background(0, 0, 0);
 
     // flower images
     imgFlower1 = loadImage("flower1.png");
@@ -52,13 +74,53 @@ public class Sketch extends PApplet {
     // grass image
     imgGrass = loadImage("grass.png");
     imgGrass.resize(intGrassW, intGrassH);
+
+    // butterfly image
+    imgButterfly = loadImage("butterfly.png");
+    imgButterfly.resize(intFlyW, intFlyH);
+
+    // cloud image
+    imgCloud = loadImage("cloud.png");
+    imgCloud.resize(intCloudW, intCloudH);
   }
 
   /**
    * Called repeatedly, anything drawn to the screen goes here
    */
   public void draw() {
-    
+    // changes background colour and clears screen
+    if (keyPressed) {
+      background(0, 10, 100);
+    }
+
+    // changes back to original background colour
+    if (key == ' ') {
+      background(0, 0, 0);
+    }
+
+    // // changes background to another colour on click
+    // intR = randomInt(255, 0);
+    // intG = randomInt(255, 0);
+    // intB = randomInt(255, 0);
+    // if (mousePressed) {
+    //   background(intR, intG, intB);
+    // }
+
+    // moves cloud
+    if (blnCloudUp) {
+      fltCloudY -= 3;
+    }
+    if (blnCloudDown) {
+      fltCloudY += 3;
+    }
+    if (blnCloudLeft) {
+      fltCloudX -= 3;
+    }
+    if (blnCloudRight) {
+      fltCloudX += 3;
+    }
+    // prints cloud
+    image(imgCloud, fltCloudX, fltCloudY);
   }
 
   /**
@@ -103,7 +165,55 @@ public class Sketch extends PApplet {
     }
   }
 
+  /**
+   * prints grass on the cursor when dragged
+   * 
+   * @author NJudd
+   */
   public void mouseDragged() {
-      image(imgGrass, mouseX - 20, mouseY - 10);
+    image(imgGrass, mouseX - 20, mouseY - 10);
+  }
+
+  /**
+   * prints butterfly when mouse wheel is altered
+   * 
+   * @author NJudd
+   */
+  public void mouseWheel() {
+    image(imgButterfly, mouseX - 28, mouseY - 21);
+  }
+
+  /**
+   * allows the cloud to move when the arrow keys are pressed
+   * 
+   * @author NJudd
+   */
+  public void keyPressed() {
+    if (keyCode == UP) {
+      blnCloudUp = true;
+    } else if (keyCode == DOWN) {
+      blnCloudDown = true;
+    } else if (keyCode == LEFT) {
+      blnCloudLeft = true;
+    } else if (keyCode == RIGHT) {
+      blnCloudRight = true;
+    }
+  }
+
+  /**
+   * allows the cloud to stop moving when the arrow keys are released
+   * 
+   * @author NJudd
+   */
+  public void keyReleased() {
+    if (keyCode == UP) {
+      blnCloudUp = false;
+    } else if (keyCode == DOWN) {
+      blnCloudDown = false;
+    } else if (keyCode == LEFT) {
+      blnCloudLeft = false;
+    } else if (keyCode == RIGHT) {
+      blnCloudRight = false;
+    }
   }
 }
